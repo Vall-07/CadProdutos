@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produtos de Ortifruti</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #166a38; 
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #form-container {
+            margin-bottom: 20px;
+            background-color: #f6fff2; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #166a38; 
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #4caf50; 
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #166a38; 
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #13532b; 
+        }
+
+        #lista-produtos {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .produto {
+            background-color: #f6fff2; 
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .produto:hover {
+            background-color: #edfcec; 
+        }
+
+        .produto h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #166a38; 
+        }
+
+        .produto p {
+            margin: 0;
+            color: #4caf50; 
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input[type=text] {
+            padding: 10px;
+            width: 50%;
+            border-radius: 4px;
+            border: 1px solid #4caf50; 
+            box-sizing: border-box;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #166a38; 
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-container button:hover {
+            background-color: #13532b; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Cadastro de Produtos de Ortifruti</h1>
+
+    <div id="form-container">
+        <label for="produto">Produto:</label>
+        <input type="text" id="produto">
+        <label for="valor">Valor:</label>
+        <input type="text" id="valor">
+        <label for="cad">Data de Cadastro:</label>
+        <input type="date" id="cad">
+        <button onclick="adicionarProduto()">Adicionar Produto</button>
+    </div>
+
+    <div class="search-container">
+        <label for="search">Buscar Produto:</label>
+        <input type="text" id="search" oninput="searchProduto()">
+        <button onclick="searchProduto()">Buscar</button>
+    </div>
+
+    <div id="lista-produtos"></div>
+
+    <script>
+        var produtos = [];
+
+        function adicionarProduto() {
+            var produtoInput = document.getElementById('produto');
+            var valorInput = document.getElementById('valor');
+            var cadInput = document.getElementById('cad');
+
+            var produto = produtoInput.value;
+            var valor = valorInput.value;
+            var cad = cadInput.value;
+
+            if (produto && valor && cad) {
+                var novoProduto = { produto: produto, valor: valor, cad: cad };
+                produtos.push(novoProduto);
+                exibirProdutos();
+                produtoInput.value = '';
+                valorInput.value = '';
+                cadInput.value = '';
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        }
+
+        function exibirProdutos() {
+            var listaProdutos = document.getElementById('lista-produtos');
+            listaProdutos.innerHTML = '';
+
+            produtos.forEach(function(produto, index) {
+                var produtoItem = document.createElement('div');
+                produtoItem.classList.add('produto');
+                produtoItem.innerHTML = '<h2>' + produto.produto + '</h2>' +
+                                        '<p><strong>Valor:</strong> R$ ' + produto.valor + '</p>' +
+                                        '<p><strong>Cadastro:</strong> ' + produto.cad + '</p>';
+                listaProdutos.appendChild(produtoItem);
+            });
+        }
+
+        function searchProduto() {
+            var searchTerm = document.getElementById('search').value.toLowerCase();
+
+            var produtosFiltrados = produtos.filter(function(produto) {
+                return produto.produto.toLowerCase().includes(searchTerm);
+            });
+
+            var listaProdutos = document.getElementById('lista-produtos');
+            listaProdutos.innerHTML = '';
+
+            produtosFiltrados.forEach(function(produto, index) {
+                var produtoItem = document.createElement('div');
+                produtoItem.classList.add('produto');
+                produtoItem.innerHTML = '<h2>' + produto.produto + '</h2>' +
+                                        '<p><strong>Valor:</strong> R$ ' + produto.valor + '</p>' +
+                                        '<p><strong>Cadastro:</strong> ' + produto.cad + '</p>';
+                listaProdutos.appendChild(produtoItem);
+            });
+        }
+    </script>
+</body>
+</html>
